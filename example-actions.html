@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>ARIA Design Patterns: Menu Button and Menu</title>
+  <link href="common/css/base.css" rel="stylesheet">
+  <link href="common/css/table.css" rel="stylesheet">
+  <link href="example.css" rel="stylesheet">
+  <script src="scripts/MenuItemAgent.js"></script>
+  <script src="scripts/PopupMenu.js"></script>
+  <script src="scripts/MenuButton.js"></script>
+</head>
+<body>
+  <section>
+    <h1>ARIA Design Patterns: Menu Button &amp; Menu</h1>
+    <h2>Example 1. Menu button with menu containing action items</h2>
+    <p>This example illustrates the use of a menu button that controls a popup menu of actions for changing
+    the state in a web application.</p>
+    <p>In particular, selecting an item from the menu controlled by the 'Actions' button updates the 'Last Action' textbox.</p>
+  </section>
+  <section>
+    <h3>Interactive Demo</h3>
+    <div class="demo">
+      <p><a href="#">Link that precedes button</a></p>
+      <button id="mb1" aria-haspopup="true" aria-controls="menu1" aria-expanded="false">
+         Actions <img alt="" width="10px" style="padding-bottom: 1px" src="images/down-arrow.png"/>
+      </button>
+      <label>
+        Last Action:
+        <input id="action-output" value="">
+      </label>
+      <ul id="menu1" role="menu" aria-labelledby="mb1">
+        <li role="menuitem" onclick="updateLastAction(event)">
+          First Action
+        </li>
+        <li role="menuitem" onclick="updateLastAction(event)">
+          Second Action
+        </li>
+        <li role="menuitem" onclick="updateLastAction(event)">
+          Third Action
+        </li>
+        <li role="menuitem" onclick="updateLastAction(event)">
+          Fourth Action
+        </li>
+      </ul>
+    </div>
+  </section>
+  <section>
+    <h3>Menu Button: Keyboard Interactions</h3>
+    <p>From <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#menubutton">ARIA Authoring Practices 1.1: Menu Button</a></p>
+    <p>With focus on the button:</p>
+    <ul>
+    <li>Space and Enter: open the menu and place focus on the first menu item.</li>
+    <li>(Optional) Down Arrow: opens the menu and moves focus to the first menu item.</li>
+    </ul>
+  </section>
+  <section>
+    <h3>Menu: Keyboard Interactions</h3>
+    <p>From <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#menu">ARIA Authoring Practices 1.1: Menu</a></p>
+    <p>When a menu opens and its items are arranged vertically:</p>
+    <ul>
+    <li>Keyboard focus is placed on the first item. All items in a menu are focusable as described in 4.1.3 Keyboard Navigation within Widgets.</li>
+    <li>Enter and optionally Space: activate the menu item with focus (perform the command or open the submenu associated with the menu item).</li>
+    <li>Down Arrow and Up Arrow: move focus to the next and previous items, respectively, optionally wrapping from last to first and vice versa.</li>
+    <li>Home and End: If arrow key wrapping is not supported, move focus to first and last items.</li>
+    <li>Any key that corresponds to a printable character: Move focus to the next menu item in the current menu whose label begins with that printable character.</li>
+    <li>Escape: Close the menu and return focus to the element or context, e.g., menu button or parent menu item, from which the menu was opened.</li>
+    <li>Tab: Close the menu and all open parent menus and move focus to the next element in the tab sequence.</li>
+    <li>Shift + Tab: Close the menu and all open parent menus and move focus to the previous element in the tab sequence.</li>
+    </ul>
+    <p>Note: For Left Arrow and Right Arrow, the APG gives the option to "do nothing" when the menu does not contain any submenus. Since that is the case in this example, that option was chosen.</p>
+  </section>
+  <section>
+    <h3>For Developers</h3>
+    <p>The following resources provide descriptions of the ARIA, HTML and JavaScript implementation details for this example.</p>
+    <ul>
+    <li><a href="README.md">README.md</a></li>
+    </ul>
+  <script type="text/javascript">
+    var menubutton = new MenuButton(document.getElementById('mb1'));
+    menubutton.init();
+  </script>
+  <script type="text/javascript">
+    document.getElementById("action-output").value = "none";
+    function updateLastAction(event) {
+      document.getElementById("action-output").value = event.currentTarget.innerHTML.trim();
+    }
+  </script>
+</body>
+</html>
