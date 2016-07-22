@@ -14,7 +14,8 @@ body {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   margin-top: 1em;
   color: #630;
   background: transparent;
@@ -33,6 +34,12 @@ h2 {
 h3 {
   font: normal 120% Helvetica, Verdana, Arial, sans-serif;
   margin-bottom: 1em;
+}
+
+h4 {
+  font: normal 100% Helvetica, Verdana, Arial, sans-serif;
+  margin-top: 1.5em;
+  margin-bottom: 0;
 }
 
 section:not(:first-of-type) {
