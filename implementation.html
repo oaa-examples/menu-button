@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Menu Button with Actions Menu: Implementation Details</title>
+  <link href="common/css/base.css" rel="stylesheet">
+  <link href="common/css/table.css" rel="stylesheet">
+ </head>
+ <body>
+ <section>
+  <h1>Menu Button with Actions Menu: Implementation Details</h1>
+  <p>This example illustrates the creation of custom menu button, popup menu and menu item widgets that
+  implement the keyboard interactions and utilize the ARIA roles, properties and states specified by the
+  <a href="http://www.w3.org/TR/wai-aria-practices-1.1">WAI-ARIA Authoring Practices 1.1</a>.</p>
+</section>
+
+<section>
+  <h2>HTML Markup / ARIA</h2>
+  <p>The HTML file for this example is <a href="https://github.com/oaa-examples/menu-button-popup-menu/blob/gh-pages/example-actions.html">example-actions.html</a>.</p>
+
+  <h3><code>button</code> element</h3>
+  <ul>
+  <li>In this example, a <code>button</code> element is used to create a custom menu button.</li>
+  <li>The <code>button</code> element is reachable, by default, in the tab order of the document.</li>
+  <li>The delegate object for the <code>button</code> element is an instance of MenuButton, which is
+  instantiated and initialized in the <code>script</code> tag of <code>example-actions.html</code>.</li>
+  </ul>
+
+  <h4>ARIA role, properties and states</h4>
+  <ul>
+  <li>Role: <code>button</code> (default)</li>
+  <li>Property: <code>aria-controls</code> &#8211; specifies the menu container element that the button controls</li>
+  <li>Property: <code>aria-haspopup</code> &#8211; indicates that activating the button results in the display of a popup menu</li>
+  <li>State: <code>aria-expanded</code> &#8211; set to true when the button's menu is visible, false otherwise</li>
+  </ul>
+
+  <h3><code>ul</code> element</h3>
+  <ul>
+  <li>In this example, a <code>ul</code> element is used to create a custom popup menu.</li>
+  <li>The <code>ul</code> element is the menu container element; its children are <code>li</code> elements that
+  act as menu items.</li>
+  <li>The delegate object for the <code>ul</code> menu container element is an instance of PopupMenu,
+  which is instantiated and initialized by the MenuButton object.</li>
+  </ul>
+
+  <h4>ARIA role, properties and states</h4>
+  <ul>
+  <li>Role: <code>menu</code></li>
+  </ul>
+
+  <h3><code>li</code> elements</h3>
+  <ul>
+  <li>In this example, <code>li</code> elements are used to create custom menu items.</li>
+  <li>The event aggregator object for the menu item <code>li</code> elements is an instance of MenuItemAgent,
+  which is instantiated and initialized by the PopupMenu object.</li>
+  </ul>
+
+  <h4>ARIA role, properties and states</h4>
+  <ul>
+  <li>Role: <code>menuitem</code></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Scripting</h2>
+  <p>The JavaScript object model for this example contains three objects: MenuButton, PopupMenu and MenuItemAgent,
+  each of which is described below.</p>
+
+  <h3>MenuButton</h3>
+  <ul>
+  <li>JavaScript file: <a href="https://github.com/oaa-examples/menu-button-popup-menu/blob/gh-pages/scripts/MenuButton.js">MenuButton.js</a></li>
+  <li>The MenuButton object serves as the delegate for an HTML <code>button</code> element that acts as a menu button.</li>
+  <li>It maintains a reference to its PopupMenu object.</li>
+  </ul>
+
+  <h4>Related objects</h4>
+  <ul>
+  <li>PopupMenu: The MenuButton object instantiates and initializes a PopupMenu object,
+  which is the delegate for the <code>ul</code> <code>menu</code> element that it controls.</li>
+  </ul>
+
+  <h4>Keyboard Event Listeners &amp; Behavior</h4>
+  <table style="width: 75%">
+  <thead>
+    <tr>
+    <th>Event</th><th>Key</th><th>Behavior</th><th>Prevent Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td><code>keydown</code></td>
+    <td>Space / Return</td>
+    <td>Open menu; set focus to first item</td>
+    <td>yes</td>
+    </tr>
+
+    <tr>
+    <td><code>keydown</code></td>
+    <td>Down Arrow</td>
+    <td>Open menu; set focus to first item</td>
+    <td>yes</td>
+    </tr>
+
+    <tr>
+    <td><code>keydown</code></td>
+    <td>Up Arrow</td>
+    <td>Open menu; set focus to last item</td>
+    <td>yes</td>
+    </tr>
+  </tbody>
+  </table>
+
+  <h4>Mouse Event Listeners &amp; Behavior</h4>
+  <table style="width: 50%">
+  <thead>
+    <tr>
+    <th>Event</th><th>Behavior</th><th>Prevent Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td><code>mouseover</code></td>
+    <td>Open menu</td>
+    <td>no</td>
+    </tr>
+
+    <tr>
+    <td><code>mouseout</code></td>
+    <td>Close menu</td>
+    <td>no</td>
+    </tr>
+
+    <tr>
+    <td><code>click</code></td>
+    <td>Open menu; set focus to first item</td>
+    <td>no</td>
+    </tr>
+  </tbody>
+  </table>
+
+  <h3>PopupMenu</h3>
+  <ul>
+  <li>JavaScript file: <a href="https://github.com/oaa-examples/menu-button-popup-menu/blob/gh-pages/scripts/PopupMenu.js
+">PopupMenu.js</a></li>
+  <li>The PopupMenu object serves as the delegate for an HTML <code>ul</code> element that acts as a popup menu.</li>
+  <li>It checks that each child <code>li</code> element of the <code>ul</code> has role <code>menuitem</code>.</li>
+  <li>Utilizing an instance of MenuItemAgent, it configures each <code>li</code> <code>menuitem</code> element and then
+  saves a reference to each element in its <code>menuitems</code> array.</li>
+  <li>It saves the state of the menu in its properties <code>hasFocus</code> and <code>hasHover</code>.</li>
+  </ul>
+
+  <h4>Related objects</h4>
+  <ul>
+  <li>MenuButton: The PopupMenu is initialized with a reference to its MenuButton controller object, which is
+  the delegate for the <code>button</code> element that controls the menu.</li>
+  <li>MenuItemAgent: The PopupMenu instantiates and initializes a MenuItemAgent object, and then uses it to
+  configure each of its <code>menuitem</code> <code>li</code> elements.</li>
+  </ul>
+
+  <h4>Mouse Event Listeners &amp; Behavior</h4>
+  <table style="width: 50%">
+  <thead>
+    <tr>
+    <th>Event</th><th>Behavior</th><th>Prevent Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td><code>mouseover</code></td>
+    <td>Save hover state (affects whether menu is closed by other means)</td>
+    <td>no</td>
+    </tr>
+
+    <tr>
+    <td><code>mouseout</code></td>
+    <td>Conditionally close menu</td>
+    <td>no</td>
+    </tr>
+  </tbody>
+  </table>
+
+  <p>Note:  Whether the PopupMenu's <code>mouseout</code> event handler closes the menu depends on (a) the focus state of its menuitem elements and (b) the hover state of its controller element.</p>
+
+  <h3>MenuItemAgent</h3>
+  <ul>
+  <li>JavaScript file: <a href="https://github.com/oaa-examples/menu-button-popup-menu/blob/gh-pages/scripts/MenuItemAgent.js">MenuItemAgent.js</a></li>
+  <li>The MenuItemAgent object serves as an event aggregator for all of the HTML <code>li</code> elements that act as menu items.</li>
+  <li>It implements <code>menuitem</code> behavior by adding the necessary event listeners to an <code>li</code> element.</li>
+  <li>Most of the keyboard event handling in this example is done by the MenuItemAgent object.</li>
+  <li>In response to those events, the MenuItemAgent object calls the methods of its related PopuMenu object.</li>
+  </ul>
+
+  <h4>Related objects</h4>
+  <ul>
+  <li>PopupMenu: Each MenuItem object is instantiated with a reference to its PopupMenu object, which is the
+  delegate for the <code>ul</code> <code>menu</code> element that contains the <code>li</code> <code>menuitem</code> element.</li>
+  </ul>
+
+  <h4>Keyboard Event Listeners &amp; Behavior</h4>
+  <table style="width: 100%">
+  <thead>
+    <tr>
+    <th>Event</th><th>Key</th><th>Behavior</th><th>Prevent Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td><code>keydown</code></td>
+    <td>Space / Return</td>
+    <td>Generate click event (see mouse click behavior)</td>
+    <td>yes</td>
+    </tr>
+
+    <tr>
+    <td><code>keydown</code></td>
+    <td>Escape</td>
+    <td>Set focus to controller element; close menu</td>
+    <td>yes</td>
+    </tr>
+
+    <tr>
+    <td><code>keydown</code></td>
+    <td>Tab</td>
+    <td>Set focus to controller element; close menu; Note: Because the handler does not
+    'Prevent Default', the browser also handles the <code>keydown</code> tab event.</td>
+    <td>no</td>
+    </tr>
+
+    <tr>
+    <td><code>keydown</code></td>
+    <td>Down Arrow</td>
+    <td>Set focus to next item (wraps)</td>
+    <td>yes</td>
+    </tr>
+
+    <tr>
+    <td><code>keydown</code></td>
+    <td>Up Arrow</td>
+    <td>Set focus to previous item (wraps)</td>
+    <td>yes</td>
+    </tr>
+
+    <tr>
+    <td><code>keydown</code></td>
+    <td>Home / Page Up</td>
+    <td>Set focus to first item</td>
+    <td>yes</td>
+    </tr>
+
+    <tr>
+    <td><code>keydown</code></td>
+    <td>End / Page Down</td>
+    <td>Set focus to last item</td>
+    <td>yes</td>
+    </tr>
+
+    <tr>
+    <td><code>keypress</code></td>
+    <td>Any Printable Character</td>
+    <td>Set focus to item with matching first character</td>
+    <td>no</td>
+    </tr>
+  </tbody>
+  </table>
+
+  <h4>Mouse Event Listeners &amp; Behavior</h4>
+  <table style="width: 50%">
+  <thead>
+    <tr>
+    <th>Event</th><th>Behavior</th><th>Prevent Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td><code>click</code></td>
+    <td>Set focus to menu's controller element; close menu</td>
+    <td>no</td>
+    </tr>
+
+    <tr>
+    <td><code>focus</code></td>
+    <td>Save focus state in menu object</td>
+    <td>no</td>
+    </tr>
+
+    <tr>
+    <td><code>blur</code></td>
+    <td>Save focus state in menu object</td>
+    <td>no</td>
+    </tr>
+  </tbody>
+  </table>
+</section>
+</body>
+</html>
+
+<!--
+
+
+| Type         | Event / Key                    | Behavior                           | Prevent Default |
+| :----------- | :----------------------------- | :--------------------------------- | :-------------- |
+| Keyboard     | `keydown` / `space` `return`   | Generate click event (see mouse click behavior) | yes |
+|              | `keydown` / `esc` `tab`        | Close menu; set focus to controller element | no |
+|              | `keydown` / `up arrow`         | Set focus to previous item (wraps) | yes |
+|              | `keydown` / `down arrow`       | Set focus to next item (wraps)     | yes |
+|              | `keydown` / `home` `page up`   | Set focus to first item            | yes |
+|              | `keydown` / `end` `page down`  | Set focus to last item             | yes |
+|              | `keypress` /  `letter key`     | Set focus to item with matching first letter | no |
+| Mouse        | `click`                        | Close menu; set focus to menu's controller element | no |
+| Focus        | `focus`                        | Save focus state in menu object    | no |
+|              | `blur`                         | Save focus state in menu object    | no |
+-->
