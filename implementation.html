@@ -197,6 +197,28 @@
   delegate for the <code>ul</code> <code>menu</code> element that contains the <code>li</code> <code>menuitem</code> element.</li>
   </ul>
 
+  <h4>Focus Event Listeners &amp; Behavior</h4>
+  <table style="width: 50%">
+  <thead>
+    <tr>
+    <th>Event</th><th>Behavior</th><th>Prevent Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td><code>focus</code></td>
+    <td>Save focus state in menu object</td>
+    <td>no</td>
+    </tr>
+
+    <tr>
+    <td><code>blur</code></td>
+    <td>Save focus state in menu object</td>
+    <td>no</td>
+    </tr>
+  </tbody>
+  </table>
+
   <h4>Keyboard Event Listeners &amp; Behavior</h4>
   <table style="width: 100%">
   <thead>
@@ -277,37 +299,8 @@
     <td>Set focus to menu's controller element; close menu</td>
     <td>no</td>
     </tr>
-
-    <tr>
-    <td><code>focus</code></td>
-    <td>Save focus state in menu object</td>
-    <td>no</td>
-    </tr>
-
-    <tr>
-    <td><code>blur</code></td>
-    <td>Save focus state in menu object</td>
-    <td>no</td>
-    </tr>
   </tbody>
   </table>
 </section>
 </body>
 </html>
-
-<!--
-
-
-| Type         | Event / Key                    | Behavior                           | Prevent Default |
-| :----------- | :----------------------------- | :--------------------------------- | :-------------- |
-| Keyboard     | `keydown` / `space` `return`   | Generate click event (see mouse click behavior) | yes |
-|              | `keydown` / `esc` `tab`        | Close menu; set focus to controller element | no |
-|              | `keydown` / `up arrow`         | Set focus to previous item (wraps) | yes |
-|              | `keydown` / `down arrow`       | Set focus to next item (wraps)     | yes |
-|              | `keydown` / `home` `page up`   | Set focus to first item            | yes |
-|              | `keydown` / `end` `page down`  | Set focus to last item             | yes |
-|              | `keypress` /  `letter key`     | Set focus to item with matching first letter | no |
-| Mouse        | `click`                        | Close menu; set focus to menu's controller element | no |
-| Focus        | `focus`                        | Save focus state in menu object    | no |
-|              | `blur`                         | Save focus state in menu object    | no |
--->
